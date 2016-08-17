@@ -15,9 +15,15 @@
 # Copyright 2015 Michael Hart (michael.hart.au@gmail.com)
 # https://github.com/mhart/alpine-node
 
-FROM mhart/alpine-node:base-5.9
+FROM mhart/alpine-node:5.9
 
-ADD scripts/ /scripts/
-ADD assets/ /opt/resource/
-RUN chmod +x /opt/resource/* && \
-  chmod +x /scripts/*
+ENV NODE_ENV=production
+
+COPY scripts/ /scripts/
+COPY assets/ /opt/resource/
+
+WORKDIR /scripts
+
+RUN npm install \
+  && chmod +x /opt/resource/* \
+  && chmod +x /scripts/*.js
